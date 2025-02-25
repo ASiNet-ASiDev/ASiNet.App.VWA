@@ -1,0 +1,43 @@
+﻿using System.Windows;
+using System.Windows.Controls;
+using ASiNet.VWA.Core.Workspace;
+
+namespace ASiNet.VWA.Controls;
+public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementElement
+{
+    public VirtualWorkspace()
+    {
+        InitializeComponent();
+        WorkspaceAreaController = new(Root, Area);
+        Root.SizeChanged += OnSizeChanged;
+        WorkspaceAreaController.StartScale(this, Area);
+
+        // TEST ->
+        Area.SizeChanged += (_, _) =>
+        {
+            var wnd = new WorkspaceWindow(WorkspaceAreaController);
+            Area.Children.Add(wnd);
+            Canvas.SetLeft(wnd, Area.ActualWidth / 2);
+            Canvas.SetTop(wnd, Area.ActualHeight / 2);
+        };
+    }
+
+    public WorkspaceAreaController WorkspaceAreaController;
+
+    public void MoveElement(Vector offset, double scale)
+    {
+        var matrix = AreaMatrix.Matrix;
+        offset.Negate();
+        matrix.Translate(offset.X, offset.Y);
+        AreaMatrix.Matrix = matrix;
+        Position = new(matrix.OffsetX, matrix.OffsetY);
+    }
+
+    public void ScaleElement(Point position, double scale)
+    {
+        var matrix = AreaMatrix.Matrix;
+        matrix.ScaleAtPrepend(scale, scale, position.X, position.Y);
+        AreaMatrix.Matrix = matrix;
+        Scale = matrix.M11;
+    }
+}

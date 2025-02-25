@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ASiNet.VWA.Controls\ASiNet.VWA.Controls.csproj" />
+    <ProjectReference Include="..\ASiNet.VWA.Core\ASiNet.VWA.Core.csproj" />
+  </ItemGroup>
+
+</Project>
