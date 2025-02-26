@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Data;
+using ASiNet.VWA.Core;
 using ASiNet.VWA.Core.Interfaces;
 
 namespace ASiNet.VWA.Controls;
@@ -12,16 +13,17 @@ public partial class WorkspaceObject
         switch (e.Property.Name)
         {
             case nameof(DataContext):
-                if (e.NewValue is null)
-                    return;
-                if(e.NewValue is IWorkspaceObjectViewModel)
-                {
-                    CreateBinding(this, DataContext, PositionProperty, nameof(IWorkspaceObjectViewModel.Position));
-                    CreateBinding(this, DataContext, HeightProperty, nameof(IWorkspaceObjectViewModel.Height));
-                    CreateBinding(this, DataContext, WidthProperty, nameof(IWorkspaceObjectViewModel.Width));
-                    //CreateBinding(this, DataContext, , nameof(IWorkspaceObjectViewModel.ZIndex));
-                    CreateBinding(this, DataContext, IsPinnedProperty, nameof(IWorkspaceObjectViewModel.IsPinned));
-                }
+                e.NewValue
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Position), (o, n) => CreateBinding(this, o, PositionProperty, n))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Height), (o, n) => CreateBinding(this, o, ContentHeightProperty, n))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Width), (o, n) => CreateBinding(this, o, ContentWidthProperty, n))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.IsPinned), (o, n) => CreateBinding(this, o, IsPinnedProperty, n));
+                break;
+            case nameof(Height):
+                ContentHeight = (double)e.NewValue;
+                break;
+            case nameof(Width):
+                ContentWidth = (double)e.NewValue;
                 break;
         }
 

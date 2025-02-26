@@ -8,6 +8,9 @@ public interface IResizedElement
     
     public double MaximumHeight { get; set; }
 
+    public double ContentHeight { get; set; }
+    public double ContentWidth { get; set; }
+
     public double MinimumWidth { get; set; }
 
     public double MinimumHeight { get; set; }

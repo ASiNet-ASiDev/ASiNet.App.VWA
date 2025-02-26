@@ -16,6 +16,11 @@ public partial class WorkspaceObject
     public readonly static DependencyProperty MinimumWidthProperty = DependencyProperty.Register(nameof(MinimumWidth), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty MinimumHeightProperty = DependencyProperty.Register(nameof(MinimumHeight), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty IsPinnedProperty = DependencyProperty.Register(nameof(IsPinned), typeof(bool), typeof(WorkspaceObject), new PropertyMetadata(null));
+    public readonly static DependencyProperty ContentHeightProperty = DependencyProperty.Register(nameof(ContentHeight), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
+    public readonly static DependencyProperty ContentWidthProperty = DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
+
+    public double ContentHeight { get => (double)GetValue(ContentHeightProperty); set => SetValue(ContentHeightProperty, value); }
+    public double ContentWidth { get => (double)GetValue(ContentWidthProperty); set => SetValue(ContentWidthProperty, value); }
 
     public bool IsPinned { get => (bool)GetValue(IsPinnedProperty); set => SetValue(IsPinnedProperty, value); }
     public Point Position { get => (Point)GetValue(PositionProperty); set => SetValue(PositionProperty, value); }

@@ -13,7 +13,9 @@ public partial class MainWindowViewModel : ObservableObject
 {
     public MainWindowViewModel()
     {
-        WorkspaceObjects.Add(new WorkspaceObjectVM(typeof(WorkspaceWindow)));
+        WorkspaceObjects.Add(new WorkspaceWindowVM(typeof(WorkspaceWindow)));
+
+        WorkspaceObjects.Add(new WorkspaceWindowVM(typeof(WorkspaceWindow)));
     }
 
     public ObservableCollection<IWorkspaceObjectViewModel> WorkspaceObjects { get; } = [];

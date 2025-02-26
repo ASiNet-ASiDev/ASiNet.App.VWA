@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using ASiNet.VWA.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ASiNet.App.VWA.ViewModel;
 public partial class WorkspaceObjectVM : ObservableObject, IWorkspaceObjectViewModel
@@ -24,7 +25,6 @@ public partial class WorkspaceObjectVM : ObservableObject, IWorkspaceObjectViewM
     public partial bool IsPinned { get; set; }
     [ObservableProperty]
     public partial int ZIndex { get; set; }
-
 
 
 

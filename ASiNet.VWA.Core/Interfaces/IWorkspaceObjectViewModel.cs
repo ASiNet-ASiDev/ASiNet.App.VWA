@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace ASiNet.VWA.Core.Interfaces;
 public interface IWorkspaceObjectViewModel
