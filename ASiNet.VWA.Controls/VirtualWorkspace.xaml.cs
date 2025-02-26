@@ -7,6 +7,9 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
 {
     public VirtualWorkspace()
     {
+        MaxZoom = 2;
+        MinZoom = 0.15;
+        Scale = 1;
         InitializeComponent();
         WorkspaceAreaController = new(Root, Area);
         Root.SizeChanged += OnSizeChanged;

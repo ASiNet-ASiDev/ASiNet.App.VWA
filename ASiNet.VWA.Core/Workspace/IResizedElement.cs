@@ -10,7 +10,7 @@ public interface IResizedElement
 
     public double MinimumWidth { get; set; }
 
-    public double MinimumMinHeight { get; set; }
+    public double MinimumHeight { get; set; }
 
     public void ResizeElement(Vector offset, double scale);
 }
