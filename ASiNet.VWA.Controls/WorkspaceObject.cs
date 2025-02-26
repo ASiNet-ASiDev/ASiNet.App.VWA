@@ -22,6 +22,7 @@ public partial class WorkspaceObject : UserControl, IMovementElement, IScaledEle
         offset.Negate();
         matrix.Translate(offset.X, offset.Y);
         RootMatrix.Matrix = matrix;
+        Position = new(matrix.OffsetX, matrix.OffsetY);
     }
 
     public virtual void ResizeElement(Vector offset, double scale)

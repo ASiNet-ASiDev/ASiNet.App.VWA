@@ -82,7 +82,7 @@ public partial class VirtualWorkspace
         {
             var inst = (WorkspaceObject)Activator.CreateInstance(x.ObjectType, [WorkspaceAreaController])!;
             Area.Children.Add(inst);
-
+            inst.DataContext = x;
             var newPos = new Vector(Area.Width / 2, Area.Height / 2);
             newPos.Negate();
             inst.MoveElement(newPos, Scale);
