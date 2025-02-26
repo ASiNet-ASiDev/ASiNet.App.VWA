@@ -4,7 +4,7 @@ using System.Windows;
 namespace ASiNet.VWA.Core.Interfaces;
 public interface IVirtualWorkspaceViewModel
 {
-    public ObservableCollection<IVirtualWindowViewModel> VirtualWindows { get; }
+    public ObservableCollection<IWorkspaceObjectViewModel> WorkspaceObjects { get; }
 
     public double Scale { get; set; }
 

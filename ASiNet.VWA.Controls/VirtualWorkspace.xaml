@@ -17,6 +17,7 @@
             MouseLeftButtonDown="Area_MouseLeftButtonDown"
             MouseLeftButtonUp="Area_MouseLeftButtonUp"
             MouseLeave="Area_MouseLeave">
+        <!-- 262144 -->
         <Canvas.RenderTransform>
             <MatrixTransform x:Name="AreaMatrix"/>
         </Canvas.RenderTransform>

@@ -14,15 +14,6 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
         WorkspaceAreaController = new(Root, Area);
         Root.SizeChanged += OnSizeChanged;
         WorkspaceAreaController.StartScale(this, Area);
-
-        // TEST ->
-        Area.SizeChanged += (_, _) =>
-        {
-            var wnd = new WorkspaceWindow(WorkspaceAreaController);
-            Area.Children.Add(wnd);
-            Canvas.SetLeft(wnd, Area.ActualWidth / 2);
-            Canvas.SetTop(wnd, Area.ActualHeight / 2);
-        };
     }
 
     public WorkspaceAreaController WorkspaceAreaController;

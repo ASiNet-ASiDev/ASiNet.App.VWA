@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ASiNet.App.VWA;
+namespace ASiNet.App.VWA.View;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

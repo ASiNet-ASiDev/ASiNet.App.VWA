@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Windows;
 
 namespace ASiNet.VWA.Controls;
 public partial class VirtualWorkspace
@@ -11,6 +12,7 @@ public partial class VirtualWorkspace
     public readonly static DependencyProperty MinXOffsetProperty = DependencyProperty.Register(nameof(MinXOffset), typeof(double), typeof(VirtualWorkspace), new PropertyMetadata(null));
     public readonly static DependencyProperty MaxYOffsetProperty = DependencyProperty.Register(nameof(MaxYOffset), typeof(double), typeof(VirtualWorkspace), new PropertyMetadata(null));
     public readonly static DependencyProperty MinYOffsetProperty = DependencyProperty.Register(nameof(MinYOffset), typeof(double), typeof(VirtualWorkspace), new PropertyMetadata(null));
+    public readonly static DependencyProperty WorkspaceObjectsProperty = DependencyProperty.Register(nameof(WorkspaceObjects), typeof(IEnumerable), typeof(VirtualWorkspace), new PropertyMetadata(null));
     public Point Position { get => (Point)GetValue(PositionProperty); set => SetValue(PositionProperty, value); }
     public double MaxZoom { get => (double)GetValue(MaxZoomProperty); set => SetValue(MaxZoomProperty, value); }
     public double MinZoom { get => (double)GetValue(MinZoomProperty); set => SetValue(MinZoomProperty, value); }
@@ -19,4 +21,6 @@ public partial class VirtualWorkspace
     public double MaxYOffset { get => (double)GetValue(MaxYOffsetProperty); set => SetValue(MaxYOffsetProperty, value); }
     public double MinXOffset { get => (double)GetValue(MinXOffsetProperty); set => SetValue(MinXOffsetProperty, value); }
     public double MinYOffset { get => (double)GetValue(MinYOffsetProperty); set => SetValue(MinYOffsetProperty, value); }
+
+    public IEnumerable WorkspaceObjects { get => (IEnumerable)GetValue(WorkspaceObjectsProperty); set => SetValue(WorkspaceObjectsProperty, value); }
 }
