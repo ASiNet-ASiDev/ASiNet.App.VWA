@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using ASiNet.VWA.Core.Entities;
 using ASiNet.VWA.Core.logging;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ASiNet.App.VWA.ViewModel;
-public partial class ConsolePageVM : ObservableObject
+public partial class ConsolePageVM : WorkspaceWindowVM
 {
-    public ConsolePageVM()
+    public ConsolePageVM() : base(typeof(View.Pages.ConsolePage))
     {
         Logger.RegisteredLog += OnRegisteredLog;
     }

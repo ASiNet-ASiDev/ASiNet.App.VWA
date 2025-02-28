@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ASiNet.App.VWA.View.Pages.ConsolePage"
+﻿<core:WorkspaceWindow x:Class="ASiNet.App.VWA.View.Pages.ConsolePage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,11 +7,12 @@
              xmlns:vm="clr-namespace:ASiNet.App.VWA.ViewModel"
              xmlns:en="clr-namespace:ASiNet.VWA.Core.Enums;assembly=ASiNet.VWA.Core"
              xmlns:cnvrt="clr-namespace:ASiNet.App.VWA.Converters"
+             xmlns:core="clr-namespace:ASiNet.VWA.Core;assembly=ASiNet.VWA.Core"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="Black">
-    <UserControl.Resources>
+    <core:WorkspaceWindow.Resources>
         <cnvrt:TimeOnlyConverter x:Key="TimeConverter"/>
-    </UserControl.Resources>
+    </core:WorkspaceWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -44,4 +45,4 @@
             </ItemsControl>
         </ScrollViewer>
     </Grid>
-</UserControl>
+</core:WorkspaceWindow>

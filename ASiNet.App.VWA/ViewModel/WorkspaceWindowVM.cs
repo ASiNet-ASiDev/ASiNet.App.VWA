@@ -10,8 +10,5 @@ public partial class WorkspaceWindowVM : WorkspaceObjectVM, IWorkspaceWindowView
     }
 
     [ObservableProperty]
-    public partial UIElement? Content { get; set; }
-
-    [ObservableProperty]
     public partial bool IsMinimize { get; set; }
 }

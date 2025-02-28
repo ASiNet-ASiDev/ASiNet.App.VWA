@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using ASiNet.VWA.Core.Workspace;
 
-namespace ASiNet.App.VWA.View.Pages
+namespace ASiNet.App.VWA.View.Pages;
+public partial class ConsolePage : ASiNet.VWA.Core.WorkspaceWindow
 {
-    /// <summary>
-    /// Логика взаимодействия для ConsolePage.xaml
-    /// </summary>
-    public partial class ConsolePage : UserControl
+    public ConsolePage()
     {
-        public ConsolePage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
+
+    public ConsolePage(IAreaController areaController) : base(areaController)
+    {
+
+        InitializeComponent();
     }
 }
