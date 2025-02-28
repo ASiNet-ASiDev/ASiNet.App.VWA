@@ -1,9 +1,20 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using ASiNet.VWA.Core.Interfaces;
+using ASiNet.VWA.Core.Workspace;
 
-namespace ASiNet.VWA.Controls;
-public partial class WorkspaceObject
+namespace ASiNet.VWA.Core;
+public class WorkspaceObject : UserControl, IMovementElement, IScaledElement, IResizedElement
 {
+    public WorkspaceObject(IAreaController areaController)
+    {
+        AreaController = areaController;
+        this.RenderTransform = RootMatrix = new MatrixTransform();
+    }
+
     public readonly static DependencyProperty PositionProperty = DependencyProperty.Register(nameof(Position), typeof(Point), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty MaxZoomProperty = DependencyProperty.Register(nameof(MaxZoom), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty MinZoomProperty = DependencyProperty.Register(nameof(MinZoom), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
@@ -39,4 +50,73 @@ public partial class WorkspaceObject
     public double MaximumHeight { get => (double)GetValue(MaximumHeightProperty); set => SetValue(MaximumHeightProperty, value); }
     public double MinimumWidth { get => (double)GetValue(MinimumWidthProperty); set => SetValue(MinimumWidthProperty, value); }
     public double MinimumHeight { get => (double)GetValue(MinimumHeightProperty); set => SetValue(MinimumHeightProperty, value); }
+
+
+    public IAreaController AreaController { get; set; }
+
+    public MatrixTransform RootMatrix { get; set; }
+
+    public virtual void MoveElement(Vector offset, double scale)
+    {
+        var matrix = RootMatrix.Matrix;
+        offset.Negate();
+        matrix.Translate(offset.X, offset.Y);
+        RootMatrix.Matrix = matrix;
+        Position = new(matrix.OffsetX, matrix.OffsetY);
+    }
+
+    public virtual void ResizeElement(Vector offset, double scale)
+    {
+        var newOffset = offset;
+        var oldPos = AreaController.TransformToRoot(this);
+        Width -= newOffset.X;
+        Height -= newOffset.Y;
+        AreaController.UpdateAreaLayout();
+        var newPos = AreaController.TransformToRoot(this);
+        var pos = oldPos - newPos;
+        ContentHeight = Height;
+        ContentWidth = Width;
+        MoveElement(pos, 1);
+    }
+
+    public virtual void ScaleElement(Point position, double scale)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        switch (e.Property.Name)
+        {
+            case nameof(DataContext):
+                e.NewValue
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Position), (o, n) => CreateBinding(this, o, PositionProperty, n))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Height), (o, n) => CreateBinding(this, o, ContentHeightProperty, n))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Width), (o, n) => CreateBinding(this, o, ContentWidthProperty, n))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.IsPinned), (o, n) => CreateBinding(this, o, IsPinnedProperty, n))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosingCommand), (o, n) => CreateBinding(this, o, ClosingCommandProperty, n, BindingMode.OneWay))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosedCommand), (o, n) => CreateBinding(this, o, ClosedCommandProperty, n, BindingMode.OneWay));
+                break;
+                //case nameof(Height):
+                //    ContentHeight = (double)e.NewValue;
+                //    break;
+                //case nameof(Width):
+                //    ContentWidth = (double)e.NewValue;
+                //    break;
+        }
+
+        base.OnPropertyChanged(e);
+    }
+
+
+    protected static void CreateBinding(DependencyObject target, object src, DependencyProperty property, string path, BindingMode mode = BindingMode.TwoWay)
+    {
+        var bind = new Binding(path)
+        {
+            Source = src,
+            Mode = mode,
+            UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+        };
+        BindingOperations.SetBinding(target, property, bind);
+    }
 }

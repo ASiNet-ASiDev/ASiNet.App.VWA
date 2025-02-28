@@ -1,9 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using ASiNet.VWA.Core;
 using ASiNet.VWA.Core.Workspace;
 
 namespace ASiNet.VWA.Controls;
-public class WorkspaceAreaController(VirtualWorkspace root, UIElement area)
+public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IAreaController
 {
     private IMovementElement? _movementElement;
     private IResizedElement? _resizedElement;

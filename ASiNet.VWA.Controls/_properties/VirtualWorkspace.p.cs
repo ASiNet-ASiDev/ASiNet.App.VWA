@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Windows;
+using ASiNet.VWA.Core;
 
 namespace ASiNet.VWA.Controls;
 public partial class VirtualWorkspace

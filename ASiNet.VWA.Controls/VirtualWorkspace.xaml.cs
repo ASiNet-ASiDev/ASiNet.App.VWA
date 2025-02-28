@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
+using ASiNet.VWA.Core;
 using ASiNet.VWA.Core.Interfaces;
 using ASiNet.VWA.Core.Workspace;
 
