@@ -3,7 +3,7 @@ using ASiNet.VWA.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ASiNet.App.VWA.ViewModel;
-public partial class WorkspaceWindowVM : WorkspaceObjectVM, IVirtualWindowViewModel
+public partial class WorkspaceWindowVM : WorkspaceObjectVM, IWorkspaceWindowViewModel
 {
     public WorkspaceWindowVM(Type objectType) : base(objectType)
     {

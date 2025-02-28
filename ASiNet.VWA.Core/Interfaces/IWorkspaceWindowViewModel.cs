@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 
 namespace ASiNet.VWA.Core.Interfaces;
-public interface IVirtualWindowViewModel : IWorkspaceObjectViewModel
+public interface IWorkspaceWindowViewModel : IWorkspaceObjectViewModel
 {
     public UIElement? Content { get; set; }
 

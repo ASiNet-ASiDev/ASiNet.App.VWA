@@ -21,6 +21,15 @@
                     <MenuItem Name="CloseMenuItem" Header="Close" Click="CloseMenuItem_Click"/>
                 </ContextMenu>
             </Grid.ContextMenu>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Pin" Grid.Column="1" Content=">" Click="Pin_Click"/>
+            <Button Name="Minimize" Grid.Column="2" Content="__" Click="Minimize_Click"/>
+            <Button Name="Close" Grid.Column="3" Content="X" Click="Close_Click"/>
         </Grid> 
         <Rectangle Grid.Row="1" 
                    x:Name="ResizeHandler" 
@@ -29,6 +38,7 @@
                    HorizontalAlignment="Right" 
                    VerticalAlignment="Bottom" 
                    MouseLeftButtonDown="ResizeHandler_MouseLeftButtonDown"
-                   MouseLeftButtonUp="ResizeHandler_MouseLeftButtonUp"/>
+                   MouseLeftButtonUp="ResizeHandler_MouseLeftButtonUp"
+                   Panel.ZIndex="100"/>
     </Grid>
 </core:WorkspaceObject>

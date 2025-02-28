@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ASiNet.App.VWA.View.Pages;
 using ASiNet.VWA.Controls;
 using ASiNet.VWA.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,7 +14,7 @@ public partial class MainWindowViewModel : ObservableObject
 {
     public MainWindowViewModel()
     {
-        WorkspaceObjects.Add(new WorkspaceWindowVM(typeof(WorkspaceWindow)) { Position = new(-131072, -131072) });
+        WorkspaceObjects.Add(new WorkspaceWindowVM(typeof(WorkspaceWindow)) { Position = new(-131072, -131072), Content = new ConsolePage() { DataContext = new ConsolePageVM() } });
 
         WorkspaceObjects.Add(new WorkspaceWindowVM(typeof(WorkspaceWindow)) { Position = new(-131072, -131072) });
     }

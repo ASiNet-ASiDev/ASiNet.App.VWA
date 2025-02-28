@@ -4,6 +4,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using ASiNet.VWA.Core.Interfaces;
+using ASiNet.VWA.Core.logging;
 using ASiNet.VWA.Core.Workspace;
 
 namespace ASiNet.VWA.Core;
@@ -32,9 +33,13 @@ public class WorkspaceObject : UserControl, IMovementElement, IScaledElement, IR
     public readonly static DependencyProperty ContentWidthProperty = DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty ClosingCommandProperty = DependencyProperty.Register(nameof(ClosingCommand), typeof(ICommand), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty ClosedCommandProperty = DependencyProperty.Register(nameof(ClosedCommand), typeof(ICommand), typeof(WorkspaceObject), new PropertyMetadata(null));
+    public readonly static DependencyProperty OpeningCommandProperty = DependencyProperty.Register(nameof(OpeningCommand), typeof(ICommand), typeof(WorkspaceObject), new PropertyMetadata(null));
+    public readonly static DependencyProperty OpenedCommandProperty = DependencyProperty.Register(nameof(OpenedCommand), typeof(ICommand), typeof(WorkspaceObject), new PropertyMetadata(null));
 
     public ICommand? ClosingCommand { get => (ICommand?)GetValue(ClosingCommandProperty); set => SetValue(ClosingCommandProperty, value); }
     public ICommand? ClosedCommand { get => (ICommand?)GetValue(ClosedCommandProperty); set => SetValue(ClosedCommandProperty, value); }
+    public ICommand? OpeningCommand { get => (ICommand?)GetValue(OpeningCommandProperty); set => SetValue(OpeningCommandProperty, value); }
+    public ICommand? OpenedCommand { get => (ICommand?)GetValue(OpenedCommandProperty); set => SetValue(OpenedCommandProperty, value); }
     public double ContentHeight { get => (double)GetValue(ContentHeightProperty); set => SetValue(ContentHeightProperty, value); }
     public double ContentWidth { get => (double)GetValue(ContentWidthProperty); set => SetValue(ContentWidthProperty, value); }
     public bool IsPinned { get => (bool)GetValue(IsPinnedProperty); set => SetValue(IsPinnedProperty, value); }
@@ -90,19 +95,15 @@ public class WorkspaceObject : UserControl, IMovementElement, IScaledElement, IR
         {
             case nameof(DataContext):
                 e.NewValue
-                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Position), (o, n) => CreateBinding(this, o, PositionProperty, n))
-                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Height), (o, n) => CreateBinding(this, o, ContentHeightProperty, n))
-                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Width), (o, n) => CreateBinding(this, o, ContentWidthProperty, n))
-                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.IsPinned), (o, n) => CreateBinding(this, o, IsPinnedProperty, n))
-                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosingCommand), (o, n) => CreateBinding(this, o, ClosingCommandProperty, n, BindingMode.OneWay))
-                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosedCommand), (o, n) => CreateBinding(this, o, ClosedCommandProperty, n, BindingMode.OneWay));
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Position), (o, n) => CreateBinding(this, o, PositionProperty, n), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Height), (o, n) => CreateBinding(this, o, ContentHeightProperty, n), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Width), (o, n) => CreateBinding(this, o, ContentWidthProperty, n), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.IsPinned), (o, n) => CreateBinding(this, o, IsPinnedProperty, n), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosingCommand), (o, n) => CreateBinding(this, o, ClosingCommandProperty, n, BindingMode.OneWay), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosedCommand), (o, n) => CreateBinding(this, o, ClosedCommandProperty, n, BindingMode.OneWay), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.OpeningCommand), (o, n) => CreateBinding(this, o, OpeningCommandProperty, n, BindingMode.OneWay), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.OpenedCommand), (o, n) => CreateBinding(this, o, OpenedCommandProperty, n, BindingMode.OneWay), x => Logger.Warning($"[BINDING_SKIPPED]: {x}"));
                 break;
-                //case nameof(Height):
-                //    ContentHeight = (double)e.NewValue;
-                //    break;
-                //case nameof(Width):
-                //    ContentWidth = (double)e.NewValue;
-                //    break;
         }
 
         base.OnPropertyChanged(e);

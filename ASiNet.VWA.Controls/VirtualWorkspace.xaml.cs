@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using ASiNet.VWA.Core;
 using ASiNet.VWA.Core.Interfaces;
@@ -14,12 +13,12 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
         MinZoom = 0.15;
         Scale = 1;
         InitializeComponent();
-        WorkspaceAreaController = new(Root, Area);
+        AreaController = new WorkspaceAreaController(Root, Area);
         Root.SizeChanged += OnSizeChanged;
-        WorkspaceAreaController.StartScale(this, Area);
+        AreaController.StartScale(this, Area);
     }
 
-    public WorkspaceAreaController WorkspaceAreaController;
+    public IAreaController AreaController;
 
     public void MoveElement(Vector offset, double scale)
     {
@@ -45,15 +44,17 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
 
     public void AddElement(Point pos, IWorkspaceObjectViewModel workspaceObject)
     {
-        var inst = (WorkspaceObject)Activator.CreateInstance(workspaceObject.ObjectType, [WorkspaceAreaController])!;
-        inst.DataContext = workspaceObject;
-        AddElement(new(pos.X, pos.Y), inst);
+        var instance = (WorkspaceObject)Activator.CreateInstance(workspaceObject.ObjectType, [AreaController])!;
+        instance.DataContext = workspaceObject;
+        AddElement(pos, instance);
     }
 
     public void AddElement(Point pos, WorkspaceObject workspaceObject)
     {
         _objects.Add(workspaceObject);
+        workspaceObject.OpeningCommand?.Execute(null);
         Area.Children.Add(workspaceObject);
-        workspaceObject.MoveElement(new(workspaceObject.Position.X, workspaceObject.Position.Y), Scale);
+        workspaceObject.MoveElement(new(pos.X, pos.Y), Scale);
+        workspaceObject.OpenedCommand?.Execute(null);
     }
 }

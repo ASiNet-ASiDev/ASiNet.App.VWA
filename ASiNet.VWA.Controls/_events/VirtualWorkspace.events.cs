@@ -12,32 +12,32 @@ public partial class VirtualWorkspace
 
     private void Area_MouseWheel(object sender, MouseWheelEventArgs e)
     {
-        WorkspaceAreaController.Scale(e.Delta >= 0 ? 1.1 : 0.9);
+        AreaController.Scale(e.Delta >= 0 ? 1.1 : 0.9);
     }
 
     private void Area_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        WorkspaceAreaController.StartMove(this, false);
+        AreaController.StartMove(this, false);
     }
 
     private void Area_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        WorkspaceAreaController.EndMove();
-        WorkspaceAreaController.EndResize();
+        AreaController.EndMove();
+        AreaController.EndResize();
     }
 
     private void Area_MouseLeave(object sender, MouseEventArgs e)
     {
-        WorkspaceAreaController.EndMove();
-        WorkspaceAreaController.EndResize();
+        AreaController.EndMove();
+        AreaController.EndResize();
     }
 
     private void Root_MouseMove(object sender, MouseEventArgs e)
     {
-        if(!WorkspaceAreaController.IsResized)
-            WorkspaceAreaController.Move(Scale);
+        if(!AreaController.IsResized)
+            AreaController.Move(Scale);
         else
-            WorkspaceAreaController.Resize(Scale);
+            AreaController.Resize(Scale);
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)

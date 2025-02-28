@@ -1,7 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ASiNet.VWA.Core;
 using ASiNet.VWA.Core.Interfaces;
+using ASiNet.VWA.Core.Workspace;
 
 namespace ASiNet.VWA.Controls;
 public partial class WorkspaceWindow : WorkspaceObject
@@ -15,7 +17,7 @@ public partial class WorkspaceWindow : WorkspaceObject
         InitializeComponent();
     }
 
-    public WorkspaceWindow(WorkspaceAreaController workspaceAreaController) : base(workspaceAreaController)
+    public WorkspaceWindow(IAreaController workspaceAreaController) : base(workspaceAreaController)
     {
         MinimumHeight = 100;
         MaximumHeight = 1024;
@@ -56,7 +58,18 @@ public partial class WorkspaceWindow : WorkspaceObject
                 MinimizeUpdate();
                 break;
             case nameof(DataContext):
-                e.NewValue.ContainsPropertyTo(nameof(IVirtualWindowViewModel.IsMinimize), (o, n) => CreateBinding(this, o, IsMinimizeProperty, n));
+                e.NewValue.ContainsPropertyTo(nameof(IWorkspaceWindowViewModel.IsMinimize), (o, n) => CreateBinding(this, o, IsMinimizeProperty, n));
+                e.NewValue.ContainsPropertyTo(nameof(IWorkspaceWindowViewModel.Content), (o, n) => CreateBinding(this, o, ContentPageProperty, n));
+                break;
+            case nameof(ContentPage):
+                if(e.OldValue is UIElement element)
+                    Root.Children.Remove(element);
+                if(e.NewValue is UIElement newElement)
+                {
+                    Root.Children.Add(newElement);
+                    Panel.SetZIndex(newElement, 1);
+                    Grid.SetRow(newElement, 1);
+                }
                 break;
         }
 
@@ -95,6 +108,23 @@ public partial class WorkspaceWindow : WorkspaceObject
     }
 
     private void CloseMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        ClosingCommand?.Execute(null);
+        AreaController.RemoveElement(this);
+        ClosedCommand?.Execute(null);
+    }
+
+    private void Pin_Click(object sender, RoutedEventArgs e)
+    {
+        IsPinned = !IsPinned;
+    }
+
+    private void Minimize_Click(object sender, RoutedEventArgs e)
+    {
+        IsMinimize = !IsMinimize;
+    }
+
+    private void Close_Click(object sender, RoutedEventArgs e)
     {
         ClosingCommand?.Execute(null);
         AreaController.RemoveElement(this);
