@@ -23,4 +23,7 @@ public partial class VirtualWorkspace
     public double MinYOffset { get => (double)GetValue(MinYOffsetProperty); set => SetValue(MinYOffsetProperty, value); }
 
     public IEnumerable WorkspaceObjects { get => (IEnumerable)GetValue(WorkspaceObjectsProperty); set => SetValue(WorkspaceObjectsProperty, value); }
+
+
+    private List<WorkspaceObject> _objects = [];
 }

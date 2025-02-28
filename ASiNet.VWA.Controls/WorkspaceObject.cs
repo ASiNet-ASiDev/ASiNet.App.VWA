@@ -34,6 +34,8 @@ public partial class WorkspaceObject : UserControl, IMovementElement, IScaledEle
         AreaController.UpdateAreaLayout();
         var newPos = AreaController.TransformToRoot(this);
         var pos = oldPos - newPos;
+        ContentHeight = Height;
+        ContentWidth = Width;
         MoveElement(pos, 1);
     }
 

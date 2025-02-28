@@ -3,7 +3,7 @@ using System.Windows.Input;
 using ASiNet.VWA.Core.Workspace;
 
 namespace ASiNet.VWA.Controls;
-public class WorkspaceAreaController(UIElement root, UIElement area)
+public class WorkspaceAreaController(VirtualWorkspace root, UIElement area)
 {
     private IMovementElement? _movementElement;
     private IResizedElement? _resizedElement;
@@ -17,6 +17,13 @@ public class WorkspaceAreaController(UIElement root, UIElement area)
 
     private Point _oldMovementPosition;
     private Point _oldResizedPosition;
+
+    public bool IsResized => _resizedElement is not null;
+
+    public void RemoveElement(WorkspaceObject workspaceObject)
+    {
+        root.RemoveElement(workspaceObject);
+    }
 
     public bool StartMove(IMovementElement element, bool isConsiderScale = true)
     {
@@ -41,6 +48,7 @@ public class WorkspaceAreaController(UIElement root, UIElement area)
     {
         if (_resizedElement is not null)
             return false;
+        
         _oldResizedPosition = RelativeToRootPosition;
         _resizedElement = element;
         return true;
@@ -92,6 +100,14 @@ public class WorkspaceAreaController(UIElement root, UIElement area)
             return;
         var position = RelativeToRootPosition;
         var offset = (_oldResizedPosition - position) / scale;
+        if((offset.X > 0 && _resizedElement.ContentWidth <= _resizedElement.MinimumWidth) || 
+            (offset.X < 0) && _resizedElement.ContentWidth >= _resizedElement.MaximumWidth)
+            offset.X = 0;
+        if ((offset.Y > 0 && _resizedElement.ContentHeight <= _resizedElement.MinimumHeight) ||
+            (offset.Y < 0) && _resizedElement.ContentHeight >= _resizedElement.MaximumHeight)
+            offset.Y = 0;
+
+
         _oldResizedPosition = position;
         _resizedElement.ResizeElement(offset, scale);
 

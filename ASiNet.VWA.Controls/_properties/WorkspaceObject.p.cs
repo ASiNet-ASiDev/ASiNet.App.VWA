@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace ASiNet.VWA.Controls;
 public partial class WorkspaceObject
@@ -18,10 +19,13 @@ public partial class WorkspaceObject
     public readonly static DependencyProperty IsPinnedProperty = DependencyProperty.Register(nameof(IsPinned), typeof(bool), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty ContentHeightProperty = DependencyProperty.Register(nameof(ContentHeight), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
     public readonly static DependencyProperty ContentWidthProperty = DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(WorkspaceObject), new PropertyMetadata(null));
+    public readonly static DependencyProperty ClosingCommandProperty = DependencyProperty.Register(nameof(ClosingCommand), typeof(ICommand), typeof(WorkspaceObject), new PropertyMetadata(null));
+    public readonly static DependencyProperty ClosedCommandProperty = DependencyProperty.Register(nameof(ClosedCommand), typeof(ICommand), typeof(WorkspaceObject), new PropertyMetadata(null));
 
+    public ICommand? ClosingCommand { get => (ICommand?)GetValue(ClosingCommandProperty); set => SetValue(ClosingCommandProperty, value); }
+    public ICommand? ClosedCommand { get => (ICommand?)GetValue(ClosedCommandProperty); set => SetValue(ClosedCommandProperty, value); }
     public double ContentHeight { get => (double)GetValue(ContentHeightProperty); set => SetValue(ContentHeightProperty, value); }
     public double ContentWidth { get => (double)GetValue(ContentWidthProperty); set => SetValue(ContentWidthProperty, value); }
-
     public bool IsPinned { get => (bool)GetValue(IsPinnedProperty); set => SetValue(IsPinnedProperty, value); }
     public Point Position { get => (Point)GetValue(PositionProperty); set => SetValue(PositionProperty, value); }
     public double MaxZoom { get => (double)GetValue(MaxZoomProperty); set => SetValue(MaxZoomProperty, value); }

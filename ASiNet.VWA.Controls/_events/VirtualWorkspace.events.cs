@@ -34,8 +34,10 @@ public partial class VirtualWorkspace
 
     private void Root_MouseMove(object sender, MouseEventArgs e)
     {
-        WorkspaceAreaController.Move(Scale);
-        WorkspaceAreaController.Resize(Scale);
+        if(!WorkspaceAreaController.IsResized)
+            WorkspaceAreaController.Move(Scale);
+        else
+            WorkspaceAreaController.Resize(Scale);
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -80,19 +82,36 @@ public partial class VirtualWorkspace
         Area.Children.Clear();
         contents.ForEach(x =>
         {
-            var inst = (WorkspaceObject)Activator.CreateInstance(x.ObjectType, [WorkspaceAreaController])!;
-            Area.Children.Add(inst);
-            inst.DataContext = x;
-            var newPos = new Vector(Area.Width / 2, Area.Height / 2);
-            newPos.Negate();
-            inst.MoveElement(newPos, Scale);
+            AddElement(x.Position, x);
         });
     }
 
-
     private void OnWorkspaceObjectsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        // TODO: Implement....
-        throw new NotImplementedException();
+        switch (e.Action)
+        {
+            case NotifyCollectionChangedAction.Add:
+                foreach (var item in e.NewItems!)
+                {
+                    if(item is IWorkspaceObjectViewModel vm)
+                        AddElement(vm.Position, vm);
+                }
+                break;
+            case NotifyCollectionChangedAction.Remove:
+                foreach (var item in e.OldItems!)
+                {
+                    var res = _objects.FirstOrDefault(x => x.DataContext == item);
+                    if(res is null)
+                        continue;
+                    RemoveElement(res);
+                }
+                break;
+            case NotifyCollectionChangedAction.Replace:
+                throw new NotImplementedException("Replace not supported");
+            case NotifyCollectionChangedAction.Move:
+                throw new NotImplementedException("Move not supported");
+            case NotifyCollectionChangedAction.Reset:
+                throw new NotImplementedException("Reset not supported");
+        }
     }
 }

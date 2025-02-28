@@ -16,8 +16,18 @@
                 <ContextMenu>
                     <MenuItem Name="PinMenuItem" Header="Pin" Click="PinMenuItem_Click"/>
                     <MenuItem Name="MinimizeMenuItem" Header="Minimize" Click="MinimizeMenuItem_Click"/>
+                    <Separator/>
+                    <MenuItem Name="CloseMenuItem" Header="Close" Click="CloseMenuItem_Click"/>
                 </ContextMenu>
             </Grid.ContextMenu>
-        </Grid>
+        </Grid> 
+        <Rectangle Grid.Row="1" 
+                   x:Name="ResizeHandler" 
+                   Height="5" Width="5" 
+                   Cursor="SizeNWSE" Fill="#01000000"
+                   HorizontalAlignment="Right" 
+                   VerticalAlignment="Bottom" 
+                   MouseLeftButtonDown="ResizeHandler_MouseLeftButtonDown"
+                   MouseLeftButtonUp="ResizeHandler_MouseLeftButtonUp"/>
     </Grid>
 </local:WorkspaceObject>

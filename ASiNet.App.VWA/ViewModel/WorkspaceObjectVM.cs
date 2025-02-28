@@ -27,6 +27,18 @@ public partial class WorkspaceObjectVM : ObservableObject, IWorkspaceObjectViewM
     public partial int ZIndex { get; set; }
 
 
+    [RelayCommand]
+    private void Closing()
+    {
+
+    }
+
+    [RelayCommand]
+    private void Closed()
+    {
+
+    }
+
 
 #if DEBUG
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

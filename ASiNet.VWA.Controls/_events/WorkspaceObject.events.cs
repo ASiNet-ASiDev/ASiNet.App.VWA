@@ -17,14 +17,16 @@ public partial class WorkspaceObject
                     .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Position), (o, n) => CreateBinding(this, o, PositionProperty, n))
                     .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Height), (o, n) => CreateBinding(this, o, ContentHeightProperty, n))
                     .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.Width), (o, n) => CreateBinding(this, o, ContentWidthProperty, n))
-                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.IsPinned), (o, n) => CreateBinding(this, o, IsPinnedProperty, n));
+                    .ContainsPropertyTo(nameof(IWorkspaceObjectViewModel.IsPinned), (o, n) => CreateBinding(this, o, IsPinnedProperty, n))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosingCommand), (o, n) => CreateBinding(this, o, ClosingCommandProperty, n, BindingMode.OneWay))
+                    .ContainsPropertyTo(nameof(WorkspaceObject.ClosedCommand), (o, n) => CreateBinding(this, o, ClosedCommandProperty, n, BindingMode.OneWay));
                 break;
-            case nameof(Height):
-                ContentHeight = (double)e.NewValue;
-                break;
-            case nameof(Width):
-                ContentWidth = (double)e.NewValue;
-                break;
+            //case nameof(Height):
+            //    ContentHeight = (double)e.NewValue;
+            //    break;
+            //case nameof(Width):
+            //    ContentWidth = (double)e.NewValue;
+            //    break;
         }
 
         base.OnPropertyChanged(e);
