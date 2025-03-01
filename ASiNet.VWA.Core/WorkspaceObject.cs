@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using ASiNet.VWA.Core.Activity;
 using ASiNet.VWA.Core.Interfaces;
 using ASiNet.VWA.Core.logging;
 using ASiNet.VWA.Core.Workspace;
@@ -10,9 +11,9 @@ using ASiNet.VWA.Core.Workspace;
 namespace ASiNet.VWA.Core;
 public class WorkspaceObject : UserControl, IMovementElement, IScaledElement, IResizedElement
 {
-    public WorkspaceObject(IAreaController areaController)
+    public WorkspaceObject()
     {
-        AreaController = areaController;
+        AreaContext = WorkspaceActivity.Current!.CurrentContext;
         this.RenderTransform = RootMatrix = new MatrixTransform();
     }
 
@@ -57,7 +58,7 @@ public class WorkspaceObject : UserControl, IMovementElement, IScaledElement, IR
     public double MinimumHeight { get => (double)GetValue(MinimumHeightProperty); set => SetValue(MinimumHeightProperty, value); }
 
 
-    public IAreaController AreaController { get; set; }
+    public IWorkspaceContext AreaContext { get; set; }
 
     public MatrixTransform RootMatrix { get; set; }
 
@@ -73,11 +74,11 @@ public class WorkspaceObject : UserControl, IMovementElement, IScaledElement, IR
     public virtual void ResizeElement(Vector offset, double scale)
     {
         var newOffset = offset;
-        var oldPos = AreaController.TransformToRoot(this);
+        var oldPos = AreaContext.TransformToRoot(this);
         Width -= newOffset.X;
         Height -= newOffset.Y;
-        AreaController.UpdateAreaLayout();
-        var newPos = AreaController.TransformToRoot(this);
+        AreaContext.UpdateAreaLayout();
+        var newPos = AreaContext.TransformToRoot(this);
         var pos = oldPos - newPos;
         ContentHeight = Height;
         ContentWidth = Width;

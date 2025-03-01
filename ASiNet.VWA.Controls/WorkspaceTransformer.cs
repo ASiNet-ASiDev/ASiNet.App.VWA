@@ -1,11 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using ASiNet.VWA.Core;
 using ASiNet.VWA.Core.Workspace;
 
 namespace ASiNet.VWA.Controls;
-public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IAreaController
+public class WorkspaceTransformer(VirtualWorkspace root, UIElement area) : IWorkspaceTransformer
 {
+    public bool IsResized => _resizedElement is not null;
+
+    public Point RelativeToRootPosition => Mouse.GetPosition(root);
+    public Point RelativeToAreaPosition => Mouse.GetPosition(area);
+
+    public Point LastActiveMousePosition { get; set; } = GetRelativePosition(area);
+
     private IMovementElement? _movementElement;
     private IResizedElement? _resizedElement;
     private IScaledElement? _scaledElement;
@@ -13,18 +19,10 @@ public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IA
     private bool _isConsiderScale;
 
     private IInputElement? _scaleRelativeElement;
-    public Point RelativeToRootPosition => Mouse.GetPosition(root);
-    public Point RelativeToAreaPosition => Mouse.GetPosition(area);
 
     private Point _oldMovementPosition;
     private Point _oldResizedPosition;
 
-    public bool IsResized => _resizedElement is not null;
-
-    public void RemoveElement(WorkspaceObject workspaceObject)
-    {
-        root.RemoveElement(workspaceObject);
-    }
 
     public bool StartMove(IMovementElement element, bool isConsiderScale = true)
     {
@@ -33,6 +31,7 @@ public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IA
         _isConsiderScale = isConsiderScale;
         _oldMovementPosition = RelativeToRootPosition;
         _movementElement = element;
+        LastActiveMousePosition = GetRelativePosition(area);
         return true;
     }
 
@@ -42,6 +41,7 @@ public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IA
             return false;
         _scaledElement = element;
         _scaleRelativeElement = relative is null ? root : relative;
+        LastActiveMousePosition = GetRelativePosition(area);
         return true;
     }
 
@@ -49,26 +49,30 @@ public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IA
     {
         if (_resizedElement is not null)
             return false;
-        
+
         _oldResizedPosition = RelativeToRootPosition;
         _resizedElement = element;
+        LastActiveMousePosition = GetRelativePosition(area);
         return true;
     }
 
     public void EndMove()
     {
         _movementElement = null;
+        LastActiveMousePosition = GetRelativePosition(area);
     }
 
     public void EndScale()
     {
         _scaledElement = null;
         _scaleRelativeElement = null;
+        LastActiveMousePosition = GetRelativePosition(area);
     }
 
     public void EndResize()
     {
         _resizedElement = null;
+        LastActiveMousePosition = GetRelativePosition(area);
     }
 
     public void Move(double scale)
@@ -101,7 +105,7 @@ public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IA
             return;
         var position = RelativeToRootPosition;
         var offset = (_oldResizedPosition - position) / scale;
-        if((offset.X > 0 && _resizedElement.ContentWidth <= _resizedElement.MinimumWidth) || 
+        if ((offset.X > 0 && _resizedElement.ContentWidth <= _resizedElement.MinimumWidth) ||
             (offset.X < 0) && _resizedElement.ContentWidth >= _resizedElement.MaximumWidth)
             offset.X = 0;
         if ((offset.Y > 0 && _resizedElement.ContentHeight <= _resizedElement.MinimumHeight) ||
@@ -114,15 +118,6 @@ public class WorkspaceAreaController(VirtualWorkspace root, UIElement area) : IA
 
     }
 
-    public Point TransformToRoot(UIElement element)
-    {
-        return area.TransformToVisual(element).Transform(new(0, 0));
-    }
 
-    public void UpdateAreaLayout()
-    {
-        area.UpdateLayout();
-    }
-
-    private Point GetRelativePosition(IInputElement element) => Mouse.GetPosition(element);
+    private static Point GetRelativePosition(IInputElement element) => Mouse.GetPosition(element);
 }

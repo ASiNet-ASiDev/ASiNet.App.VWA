@@ -8,6 +8,11 @@
         xmlns:vm="clr-namespace:ASiNet.App.VWA.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.ContextMenu>
+        <ContextMenu Name="cm" >
+            <MenuItem Name="Create" Header="Create" Command="{Binding AddObjectCommand}"/>
+        </ContextMenu>
+    </Window.ContextMenu>
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>

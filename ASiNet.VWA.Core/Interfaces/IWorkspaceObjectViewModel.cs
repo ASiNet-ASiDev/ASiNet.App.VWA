@@ -5,7 +5,7 @@ namespace ASiNet.VWA.Core.Interfaces;
 public interface IWorkspaceObjectViewModel
 {
 
-    public Type ObjectType { get; }
+    public Guid RegisteredId { get; set; }
 
     public double Width { get; set; }
 

@@ -7,10 +7,4 @@ public partial class ConsolePage : ASiNet.VWA.Core.WorkspaceWindow
     {
         InitializeComponent();
     }
-
-    public ConsolePage(IAreaController areaController) : base(areaController)
-    {
-
-        InitializeComponent();
-    }
 }

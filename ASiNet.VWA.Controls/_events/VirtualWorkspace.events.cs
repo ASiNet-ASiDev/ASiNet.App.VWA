@@ -12,32 +12,32 @@ public partial class VirtualWorkspace
 
     private void Area_MouseWheel(object sender, MouseWheelEventArgs e)
     {
-        AreaController.Scale(e.Delta >= 0 ? 1.1 : 0.9);
+        WorkspaceContext.Transformer.Scale(e.Delta >= 0 ? 1.1 : 0.9);
     }
 
     private void Area_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        AreaController.StartMove(this, false);
+        WorkspaceContext.Transformer.StartMove(this, false);
     }
 
     private void Area_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        AreaController.EndMove();
-        AreaController.EndResize();
+        WorkspaceContext.Transformer.EndMove();
+        WorkspaceContext.Transformer.EndResize();
     }
 
     private void Area_MouseLeave(object sender, MouseEventArgs e)
     {
-        AreaController.EndMove();
-        AreaController.EndResize();
+        WorkspaceContext.Transformer.EndMove();
+        WorkspaceContext.Transformer.EndResize();
     }
 
     private void Root_MouseMove(object sender, MouseEventArgs e)
     {
-        if(!AreaController.IsResized)
-            AreaController.Move(Scale);
+        if (!WorkspaceContext.Transformer.IsResized)
+            WorkspaceContext.Transformer.Move(Scale);
         else
-            AreaController.Resize(Scale);
+            WorkspaceContext.Transformer.Resize(Scale);
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -82,7 +82,7 @@ public partial class VirtualWorkspace
         Area.Children.Clear();
         contents.ForEach(x =>
         {
-            AddElement(x.Position, x);
+            AddElement(x);
         });
     }
 
@@ -94,7 +94,7 @@ public partial class VirtualWorkspace
                 foreach (var item in e.NewItems!)
                 {
                     if(item is IWorkspaceObjectViewModel vm)
-                        AddElement(vm.Position, vm);
+                        AddElement(vm);
                 }
                 break;
             case NotifyCollectionChangedAction.Remove:

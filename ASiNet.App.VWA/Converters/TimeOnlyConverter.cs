@@ -6,7 +6,7 @@ public class TimeOnlyConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return ((DateTime)value).ToString("hh:mm:ss:fff");
+        return ((DateTime)value).ToString("hh:mm:ss:ffff");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ASiNet.VWA.Core;
+using ASiNet.VWA.Core.Activity;
 using ASiNet.VWA.Core.Interfaces;
 using ASiNet.VWA.Core.Workspace;
 
@@ -13,12 +15,13 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
         MinZoom = 0.15;
         Scale = 1;
         InitializeComponent();
-        AreaController = new WorkspaceAreaController(Root, Area);
+        WorkspaceContext = new WorkspaceContext(Root, Area);
+        WorkspaceActivity.Initialize(WorkspaceContext);
         Root.SizeChanged += OnSizeChanged;
-        AreaController.StartScale(this, Area);
+        WorkspaceContext.Transformer.StartScale(this, Area);
     }
 
-    public IAreaController AreaController;
+    public IWorkspaceContext WorkspaceContext;
 
     public void MoveElement(Vector offset, double scale)
     {
@@ -42,11 +45,10 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
         Area.Children.Remove(workspaceObject);
     }
 
-    public void AddElement(Point pos, IWorkspaceObjectViewModel workspaceObject)
+    public void AddElement(IWorkspaceObjectViewModel workspaceObject)
     {
-        var instance = (WorkspaceObject)Activator.CreateInstance(workspaceObject.ObjectType, [AreaController])!;
-        instance.DataContext = workspaceObject;
-        AddElement(pos, instance);
+        var instance = WorkspaceActivity.Current!.CreateWorkspaceObject(workspaceObject)!;
+        AddElement(workspaceObject.Position, instance);
     }
 
     public void AddElement(Point pos, WorkspaceObject workspaceObject)
@@ -54,7 +56,7 @@ public partial class VirtualWorkspace : UserControl, IScaledElement, IMovementEl
         _objects.Add(workspaceObject);
         workspaceObject.OpeningCommand?.Execute(null);
         Area.Children.Add(workspaceObject);
-        workspaceObject.MoveElement(new(pos.X, pos.Y), Scale);
+        workspaceObject.MoveElement(new(-pos.X, -pos.Y), Scale);
         workspaceObject.OpenedCommand?.Execute(null);
     }
 }

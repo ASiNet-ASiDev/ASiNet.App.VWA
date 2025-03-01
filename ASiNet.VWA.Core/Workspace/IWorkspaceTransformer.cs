@@ -1,11 +1,16 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace ASiNet.VWA.Core.Workspace;
-public interface IAreaController
+public interface IWorkspaceTransformer
 {
     public bool IsResized { get; }
 
-    public void RemoveElement(WorkspaceObject workspaceObject);
+    public Point LastActiveMousePosition { get; set; }
 
     public bool StartMove(IMovementElement element, bool isConsiderScale = true);
 
@@ -24,8 +29,4 @@ public interface IAreaController
     public void Scale(double scale);
 
     public void Resize(double scale);
-
-    public Point TransformToRoot(UIElement element);
-
-    public void UpdateAreaLayout();
 }

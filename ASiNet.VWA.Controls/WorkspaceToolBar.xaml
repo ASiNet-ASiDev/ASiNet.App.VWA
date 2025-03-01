@@ -6,7 +6,13 @@
              xmlns:local="clr-namespace:ASiNet.VWA.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="80">
-    <ItemsControl>
-        
-    </ItemsControl>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+        <ItemsControl>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </ScrollViewer>
 </UserControl>

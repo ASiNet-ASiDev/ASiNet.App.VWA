@@ -9,18 +9,7 @@ using ASiNet.VWA.Core.Workspace;
 namespace ASiNet.VWA.Core;
 public partial class WorkspaceWindow : WorkspaceObject
 {
-    public WorkspaceWindow() : base(null!)
-    {
-        MinimumHeight = 100;
-        MaximumHeight = 1024;
-        MinimumWidth = 100;
-        MaximumWidth = 1280;
-
-        Width = 300;
-        Height = 200;
-    }
-
-    public WorkspaceWindow(IAreaController areaController) : base(areaController)
+    public WorkspaceWindow()
     {
         MinimumHeight = 100;
         MaximumHeight = 1024;
@@ -57,14 +46,14 @@ public partial class WorkspaceWindow : WorkspaceObject
     {
         if (IsPinned)
             return;
-        AreaController.StartMove(this);
+        AreaContext.Transformer.StartMove(this);
     }
 
     private void Header_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         if (IsPinned)
             return;
-        AreaController.EndMove();
+        AreaContext.Transformer.EndMove();
     }
 
     private void PinMenuItem_Click(object sender, RoutedEventArgs e)
@@ -113,20 +102,20 @@ public partial class WorkspaceWindow : WorkspaceObject
         if (IsPinned)
             return;
 
-        AreaController.StartResize(this);
+        AreaContext.Transformer.StartResize(this);
     }
 
     private void ResizeHandler_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         if (IsPinned)
             return;
-        AreaController.EndResize();
+        AreaContext.Transformer.EndResize();
     }
 
     private void CloseMenuItem_Click(object sender, RoutedEventArgs e)
     {
         ClosingCommand?.Execute(null);
-        AreaController.RemoveElement(this);
+        AreaContext.RemoveElement(this);
         ClosedCommand?.Execute(null);
     }
 
@@ -143,7 +132,7 @@ public partial class WorkspaceWindow : WorkspaceObject
     private void Close_Click(object sender, RoutedEventArgs e)
     {
         ClosingCommand?.Execute(null);
-        AreaController.RemoveElement(this);
+        AreaContext.RemoveElement(this);
         ClosedCommand?.Execute(null);
     }
 

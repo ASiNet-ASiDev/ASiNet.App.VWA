@@ -5,7 +5,7 @@ using ASiNet.VWA.Core.logging;
 namespace ASiNet.App.VWA.ViewModel;
 public partial class ConsolePageVM : WorkspaceWindowVM
 {
-    public ConsolePageVM() : base(typeof(View.Pages.ConsolePage))
+    public ConsolePageVM()
     {
         Logger.RegisteredLog += OnRegisteredLog;
     }

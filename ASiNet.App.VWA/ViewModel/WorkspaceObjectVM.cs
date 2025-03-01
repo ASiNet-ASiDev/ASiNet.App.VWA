@@ -8,12 +8,9 @@ using CommunityToolkit.Mvvm.Input;
 namespace ASiNet.App.VWA.ViewModel;
 public partial class WorkspaceObjectVM : ObservableObject, IWorkspaceObjectViewModel
 {
-    public WorkspaceObjectVM(Type objectType)
-    {
-        ObjectType = objectType;
-    }
 
-    public Type ObjectType { get; }
+    public Guid RegisteredId { get; set; }
+
 
     [ObservableProperty]
     public partial double Width { get; set; } = 300;
@@ -25,7 +22,6 @@ public partial class WorkspaceObjectVM : ObservableObject, IWorkspaceObjectViewM
     public partial bool IsPinned { get; set; }
     [ObservableProperty]
     public partial int ZIndex { get; set; }
-
 
     [RelayCommand]
     private void Closing()
