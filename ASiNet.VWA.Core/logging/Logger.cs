@@ -28,7 +28,7 @@ public static class Logger
 
     private static object _locker = new();
 
-    private static Queue<Log> _buffer = [];
+    private static List<Log> _buffer = [];
 
     public static void Error(string message)
     {
@@ -38,9 +38,7 @@ public static class Logger
         {
             var log = new Log(LogType.Error, DateTime.Now, message);
             RegisteredLog?.Invoke(log);
-            _buffer.Enqueue(log);
-            if(_buffer.Count > 100)
-                _buffer.Dequeue();
+            UpdateBuffer(log);
         }
     }
 
@@ -50,7 +48,9 @@ public static class Logger
             return;
         lock (_locker)
         {
-            RegisteredLog?.Invoke(new(Enums.LogType.Warning, DateTime.Now, message));
+            var log = new Log(Enums.LogType.Warning, DateTime.Now, message);
+            RegisteredLog?.Invoke(log);
+            UpdateBuffer(log);
         }
     }
 
@@ -60,7 +60,9 @@ public static class Logger
             return;
         lock (_locker)
         {
-            RegisteredLog?.Invoke(new(Enums.LogType.Information, DateTime.Now, message));
+            var log = new Log(Enums.LogType.Information, DateTime.Now, message);
+            RegisteredLog?.Invoke(log);
+            UpdateBuffer(log);
         }
     }
 
@@ -87,8 +89,8 @@ public static class Logger
 
     private static void UpdateBuffer(Log log)
     {
-        _buffer.Enqueue(log);
-        if (_buffer.Count > BufferSize)
-            _buffer.Dequeue();
+        _buffer.Add(log);
+        if (_buffer.Count > 100)
+            _buffer.RemoveAt(0);
     }
 }

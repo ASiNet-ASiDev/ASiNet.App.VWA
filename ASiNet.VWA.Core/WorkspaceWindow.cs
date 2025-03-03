@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using ASiNet.VWA.Core.Interfaces;
 using ASiNet.VWA.Core.Workspace;
+using SharpVectors.Converters;
 
 namespace ASiNet.VWA.Core;
 public partial class WorkspaceWindow : WorkspaceObject
@@ -201,7 +202,7 @@ public partial class WorkspaceWindow : WorkspaceObject
 
         var pinBtn = new Button()
         {
-            Content = ">"
+            Content = "^",
         };
         var minimizeBtn = new Button()
         {
